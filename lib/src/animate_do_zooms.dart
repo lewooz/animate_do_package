@@ -16,6 +16,7 @@ class ZoomIn extends StatefulWidget {
   final bool manualTrigger;
   final bool animate;
   final double from;
+  final Curve? curve;
 
   ZoomIn(
       {this.key,
@@ -25,6 +26,7 @@ class ZoomIn extends StatefulWidget {
       this.controller,
       this.manualTrigger = false,
       this.animate = true,
+        this.curve,
       this.from = 1.0})
       : super(key: key) {
     if (manualTrigger == true && controller == null) {
@@ -58,10 +60,10 @@ class _ZoomInState extends State<ZoomIn> with SingleTickerProviderStateMixin {
 
     controller = AnimationController(duration: widget.duration, vsync: this);
     fade = Tween(begin: 0.0, end: widget.from)
-        .animate(CurvedAnimation(curve: Curves.easeOut, parent: controller!));
+        .animate(CurvedAnimation(curve: widget.curve ?? Curves.easeOut, parent: controller!));
 
     opacity = Tween<double>(begin: 0.0, end: 1).animate(
-        CurvedAnimation(parent: controller!, curve: Interval(0, 0.65)));
+        CurvedAnimation(parent: controller!, curve: widget.curve ?? Interval(0, 0.65)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -112,6 +114,7 @@ class ZoomOut extends StatefulWidget {
   final bool manualTrigger;
   final bool animate;
   final double from;
+  final Curve? curve;
 
   ZoomOut(
       {this.key,
@@ -121,6 +124,7 @@ class ZoomOut extends StatefulWidget {
       this.controller,
       this.manualTrigger = false,
       this.animate = true,
+        this.curve,
       this.from = 0.0})
       : super(key: key) {
     if (manualTrigger == true && controller == null) {
@@ -155,10 +159,10 @@ class _ZoomOutState extends State<ZoomOut> with SingleTickerProviderStateMixin {
     controller = AnimationController(duration: widget.duration, vsync: this);
 
     zoom = Tween(begin: 1.0, end: widget.from)
-        .animate(CurvedAnimation(curve: Curves.easeOut, parent: controller!));
+        .animate(CurvedAnimation(curve: widget.curve ?? Curves.easeOut, parent: controller!));
 
     opacity = Tween<double>(begin: 1.0, end: 0.0).animate(
-        CurvedAnimation(parent: controller!, curve: Interval(0, 0.65)));
+        CurvedAnimation(parent: controller!, curve: widget.curve ?? Interval(0, 0.65)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {

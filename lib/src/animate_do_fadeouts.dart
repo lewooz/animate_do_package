@@ -15,6 +15,7 @@ class FadeOut extends StatefulWidget {
   final Function(AnimationController)? controller;
   final bool manualTrigger;
   final bool animate;
+  final Curve? curve;
 
   FadeOut(
       {this.key,
@@ -23,6 +24,7 @@ class FadeOut extends StatefulWidget {
       this.delay = const Duration(milliseconds: 0),
       this.controller,
       this.manualTrigger = false,
+      this.curve,
       this.animate = false})
       : super(key: key) {
     if (manualTrigger == true && controller == null) {
@@ -55,7 +57,7 @@ class _FadeOutState extends State<FadeOut> with SingleTickerProviderStateMixin {
 
     controller = AnimationController(duration: widget.duration, vsync: this);
     animation = Tween(begin: 1.0, end: 0.0)
-        .animate(CurvedAnimation(curve: Curves.easeOut, parent: controller!));
+        .animate(CurvedAnimation(curve: widget.curve ?? Curves.easeOut, parent: controller!));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -103,6 +105,7 @@ class FadeOutDown extends StatefulWidget {
   final bool manualTrigger;
   final bool animate;
   final double from;
+  final Curve? curve;
 
   FadeOutDown(
       {this.key,
@@ -112,6 +115,7 @@ class FadeOutDown extends StatefulWidget {
       this.controller,
       this.manualTrigger = false,
       this.animate = false,
+      this.curve,
       this.from = 100})
       : super(key: key) {
     if (manualTrigger == true && controller == null) {
@@ -126,8 +130,7 @@ class FadeOutDown extends StatefulWidget {
 }
 
 /// State class, where the magic happens
-class _FadeOutDownState extends State<FadeOutDown>
-    with SingleTickerProviderStateMixin {
+class _FadeOutDownState extends State<FadeOutDown> with SingleTickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> animation;
@@ -147,10 +150,10 @@ class _FadeOutDownState extends State<FadeOutDown>
     controller = AnimationController(duration: widget.duration, vsync: this);
 
     animation = Tween<double>(begin: 0, end: widget.from)
-        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
+        .animate(CurvedAnimation(parent: controller!, curve: widget.curve ?? Curves.easeOut));
 
-    opacity = Tween<double>(begin: 1.0, end: 0.0).animate(
-        CurvedAnimation(parent: controller!, curve: Interval(0, 0.65)));
+    opacity = Tween<double>(begin: 1.0, end: 0.0)
+        .animate(CurvedAnimation(parent: controller!, curve: widget.curve ?? Interval(0, 0.65)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -200,6 +203,7 @@ class FadeOutDownBig extends StatelessWidget {
   final bool manualTrigger;
   final bool animate;
   final double from;
+  final Curve? curve;
 
   FadeOutDownBig(
       {this.key,
@@ -209,6 +213,7 @@ class FadeOutDownBig extends StatelessWidget {
       this.controller,
       this.manualTrigger = false,
       this.animate = false,
+      this.curve,
       this.from = 600})
       : super(key: key) {
     if (manualTrigger == true && controller == null) {
@@ -227,6 +232,7 @@ class FadeOutDownBig extends StatelessWidget {
         manualTrigger: manualTrigger,
         animate: animate,
         from: from,
+        curve: curve,
       );
 }
 
@@ -246,6 +252,7 @@ class FadeOutUp extends StatefulWidget {
   final bool manualTrigger;
   final bool animate;
   final double from;
+  final Curve? curve;
 
   FadeOutUp(
       {this.key,
@@ -255,6 +262,7 @@ class FadeOutUp extends StatefulWidget {
       this.controller,
       this.manualTrigger = false,
       this.animate = false,
+      this.curve,
       this.from = 100})
       : super(key: key) {
     if (manualTrigger == true && controller == null) {
@@ -269,12 +277,12 @@ class FadeOutUp extends StatefulWidget {
 }
 
 /// State class, where the magic happens
-class _FadeOutUpState extends State<FadeOutUp>
-    with SingleTickerProviderStateMixin {
+class _FadeOutUpState extends State<FadeOutUp> with SingleTickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> animation;
   late Animation<double> opacity;
+
   @override
   void dispose() {
     disposed = true;
@@ -289,9 +297,9 @@ class _FadeOutUpState extends State<FadeOutUp>
     controller = AnimationController(duration: widget.duration, vsync: this);
 
     animation = Tween<double>(begin: 0.0, end: widget.from * -1)
-        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
-    opacity = Tween<double>(begin: 1.0, end: 0.0).animate(
-        CurvedAnimation(parent: controller!, curve: Interval(0, 0.65)));
+        .animate(CurvedAnimation(parent: controller!, curve: widget.curve ?? Curves.easeOut));
+    opacity = Tween<double>(begin: 1.0, end: 0.0)
+        .animate(CurvedAnimation(parent: controller!, curve: widget.curve ?? Interval(0, 0.65)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -341,6 +349,7 @@ class FadeOutUpBig extends StatelessWidget {
   final bool manualTrigger;
   final bool animate;
   final double from;
+  final Curve? curve;
 
   FadeOutUpBig(
       {this.key,
@@ -350,6 +359,7 @@ class FadeOutUpBig extends StatelessWidget {
       this.controller,
       this.manualTrigger = false,
       this.animate = false,
+      this.curve,
       this.from = 600})
       : super(key: key) {
     if (manualTrigger == true && controller == null) {
@@ -368,6 +378,7 @@ class FadeOutUpBig extends StatelessWidget {
         manualTrigger: manualTrigger,
         animate: animate,
         from: from,
+        curve: curve,
       );
 }
 
@@ -387,6 +398,7 @@ class FadeOutLeft extends StatefulWidget {
   final bool manualTrigger;
   final bool animate;
   final double from;
+  final Curve? curve;
 
   FadeOutLeft(
       {this.key,
@@ -396,6 +408,7 @@ class FadeOutLeft extends StatefulWidget {
       this.controller,
       this.manualTrigger = false,
       this.animate = false,
+      this.curve,
       this.from = 100})
       : super(key: key) {
     if (manualTrigger == true && controller == null) {
@@ -410,12 +423,12 @@ class FadeOutLeft extends StatefulWidget {
 }
 
 /// State class, where the magic happens
-class _FadeOutLeftState extends State<FadeOutLeft>
-    with SingleTickerProviderStateMixin {
+class _FadeOutLeftState extends State<FadeOutLeft> with SingleTickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> animation;
   late Animation<double> opacity;
+
   @override
   void dispose() {
     disposed = true;
@@ -430,9 +443,9 @@ class _FadeOutLeftState extends State<FadeOutLeft>
     controller = AnimationController(duration: widget.duration, vsync: this);
 
     animation = Tween<double>(begin: 0, end: widget.from * -1)
-        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
-    opacity = Tween<double>(begin: 1.0, end: 0.0).animate(
-        CurvedAnimation(parent: controller!, curve: Interval(0, 0.65)));
+        .animate(CurvedAnimation(parent: controller!, curve: widget.curve ?? Curves.easeOut));
+    opacity = Tween<double>(begin: 1.0, end: 0.0)
+        .animate(CurvedAnimation(parent: controller!, curve: widget.curve ?? Interval(0, 0.65)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -482,6 +495,7 @@ class FadeOutLeftBig extends StatelessWidget {
   final bool manualTrigger;
   final bool animate;
   final double from;
+  final Curve? curve;
 
   FadeOutLeftBig(
       {this.key,
@@ -491,6 +505,7 @@ class FadeOutLeftBig extends StatelessWidget {
       this.controller,
       this.manualTrigger = false,
       this.animate = false,
+      this.curve,
       this.from = 600})
       : super(key: key) {
     if (manualTrigger == true && controller == null) {
@@ -509,6 +524,7 @@ class FadeOutLeftBig extends StatelessWidget {
         manualTrigger: manualTrigger,
         animate: animate,
         from: from,
+        curve: curve,
       );
 }
 
@@ -528,6 +544,7 @@ class FadeOutRight extends StatelessWidget {
   final bool manualTrigger;
   final bool animate;
   final double from;
+  final Curve? curve;
 
   FadeOutRight(
       {this.key,
@@ -537,6 +554,7 @@ class FadeOutRight extends StatelessWidget {
       this.controller,
       this.manualTrigger = false,
       this.animate = false,
+      this.curve,
       this.from = 100})
       : super(key: key) {
     if (manualTrigger == true && controller == null) {
@@ -555,6 +573,7 @@ class FadeOutRight extends StatelessWidget {
         manualTrigger: manualTrigger,
         animate: animate,
         from: from * -1,
+        curve: curve,
       );
 }
 
@@ -574,6 +593,7 @@ class FadeOutRightBig extends StatelessWidget {
   final bool manualTrigger;
   final bool animate;
   final double from;
+  final Curve? curve;
 
   FadeOutRightBig(
       {this.key,
@@ -583,6 +603,7 @@ class FadeOutRightBig extends StatelessWidget {
       this.controller,
       this.manualTrigger = false,
       this.animate = false,
+      this.curve,
       this.from = 600})
       : super(key: key) {
     if (manualTrigger == true && controller == null) {
@@ -601,5 +622,6 @@ class FadeOutRightBig extends StatelessWidget {
         manualTrigger: manualTrigger,
         animate: animate,
         from: from * -1,
+        curve: curve,
       );
 }
